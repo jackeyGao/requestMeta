@@ -1,6 +1,7 @@
 arrow==0.8.0
 Django==1.9.7
 django-qiniu-storage==2.3.0
+gunicorn==19.6.0
 jsonfield==1.0.3
 python-dateutil==2.5.3
 qiniu==7.0.7
