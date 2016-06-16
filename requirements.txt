@@ -1,0 +1,9 @@
+arrow==0.8.0
+Django==1.9.7
+django-qiniu-storage==2.3.0
+jsonfield==1.0.3
+python-dateutil==2.5.3
+qiniu==7.0.7
+requests==2.10.0
+six==1.10.0
+wheel==0.24.0

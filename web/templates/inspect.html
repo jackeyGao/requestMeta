@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load tools %}
+{% block title %}Inspect {% endblock %} 
+
+{% block right_header %}
+<div class="bottom-right" style="float: right">
+  <div class="ui green basic label">
+  <i class="green bullseye icon"></i>
+    http://{{http_host}}/{{ url.pk }}
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% for request in qs %}
+<div id="{{request.id}}" class="ui greyborder grid" style="margin-top: 20px;margin-left: 35px;margin-right: 35px;">
+  <div class="sixteen wide column">
+    <div class="ui grid" style="background-color: #eeeeee;">
+      <div class="five wide column">
+        {{ request.metas|value:"REMOTE_ADDR"}}</br>
+        <b>{{ request.method }}</b> /{{ request.url.pk }}</br>
+      </div>
+      <div class="eight wide column">
+        <i class="teal code icon"></i>{{ request.metas|value:"CONTENT_TYPE"}}</br>
+        <i class="teal upload icon"></i>{{ request.metas|value:"CONTENT_LENGTH"}} bytes
+      </div>
+      <div class="three wide column">
+        {{ request.time|humanize }} <a href="#{{request.id}}"><i class="green linkify icon"></i></a></br>
+        <b>From: </b>{{ request.metas|value:"REMOTE_ADDR"}}
+      </div>
+    </div>
+  </div>
+  <div class="five wide monospaced column">
+    <h4 class="ui grey header">FORM/POST PARAMETERS</h4>
+    {% for k, v in request.parameters.items%}
+    <b>{{ k }}: </b>{{ v }}</br>
+    {% endfor %}
+  </div>
+  <div class="eleven wide monospaced column">
+    <h4 class="ui grey header">HEADERS</h4>
+    {% for k, v in request.metas.items%}
+    <b>{{ k }}: </b>{{ v }}</br>
+    {% endfor %}
+    {% for k, v in request.headers.items %}
+    <b>{{ k }}: </b>{{ v }}</br>
+    {% endfor %}
+  </div>
+  <div class="sixteen wide column">
+  <h4 class="ui grey header">RAW BODY</h4>
+  {% if not request.body %}
+  <pre><span class="monospaced" style="color: blue;"> None</span></pre>
+  {% elif request.body|is_json %}
+  <pre><span class="monospaced" style="color: green;">{{ request.body|to_json }}</span></pre>
+  {% else %}
+  <pre><span class="monospaced"> {{ request.body }}</span></pre>
+  {% endif %}
+  </div>
+</div>
+{% endfor %}
+
+{% if not qs %}
+<div class="ui grid" style="margin-left: 25%;margin-right: 25%;">
+  <div class="sixteen wide column">
+    <h3 class="ui center aligned header">Meta URL</h3>
+    <div class="wrapper">
+      <div class="ui grey big basic label" style="">
+      <i class="yellow bullseye icon"></i>
+        http://{{http_host}}/{{ url.pk }}
+      </div>
+      <h5 class="ui header">
+        根据以下方法开始建立请求, 请求之后请刷新本页面, 查看请求数据.
+      </h5>
+    </div>
+
+
+    <h5 class="ui header">cURL</h5>
+      <pre class="prettyprint">curl -X POST -d "fizz=buzz" http://{{http_host}}/{{ url.pk }}</pre>
+
+      <h5 class="ui header">Python (with Requests)</h5>
+      <pre class="prettyprint">import requests, time
+r = requests.post('http://{{http_host}}/{{ url.pk }}', data={"ts":time.time()})
+print r.status_code
+print r.content</pre>
+
+      <h5 class="ui header">Node.js (with request)</h5>
+      <pre class="prettyprint">var request = require('request');
+var url ='http://{{http_host}}:g/{{ url.pk }}'
+request(url, function (error, response, body) {
+  if (!error) {
+    console.log(body);
+  }
+});</pre>
+
+      <h5 class="ui header">Ruby</h5>
+      <pre class="prettyprint">require 'open-uri'
+result = open('http://{{http_host}}/{{ url.pk }}')
+result.lines { |f| f.each_line {|line| p line} }</pre>
+
+      <h5 class="ui header">C# / .NET (4.5+)</h5>
+      <pre class="prettyprint">using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace RequestBinExample
+{
+  class Program
+  {
+    static void Main(string[] args)
+    {
+      var task = MakeRequest();
+      task.Wait();
+
+      var response = task.Result;
+      var body = response.Content.ReadAsStringAsync().Result;
+      Console.WriteLine(body);
+    }
+
+    private static async Task&lt;HttpResponseMessage&gt; MakeRequest()
+    {
+      var httpClient = new HttpClient();
+      return await httpClient.GetAsync(new Uri("http://{{http_host}}/{{ url.pk }}"));
+    }
+  }
+}</pre>
+
+      <h5 class="ui header">Java</h5>
+      <pre class="prettyprint">import org.apache.commons.httpclient.*;
+import org.apache.commons.httpclient.methods.*;
+import org.apache.commons.httpclient.params.HttpMethodParams;
+
+import java.io.*;
+
+public class RequestBinTutorial {
+  public static void main(String[] args) {
+    HttpClient client = new HttpClient();
+    GetMethod method = new GetMethod("http://{{http_host}}/{{ url.pk }}");
+    try {
+      int statusCode = client.executeMethod(method);
+      byte[] responseBody = method.getResponseBody();
+      System.out.println(new String(responseBody));
+    } catch (Exception e) {
+      System.err.println("Fatal error: " + e.getMessage());
+      e.printStackTrace();
+    } finally {
+      method.releaseConnection();
+    }
+  }
+}</pre>
+
+      <h5 class="ui header">PHP</h5>
+      <pre class="prettyprint">&lt;?php
+    $result = file_get_contents('http://{{http_host}}/{{ url.pk }}');
+    echo $result;
+?&gt;</pre>
+
+        </div>
+      </div>
+
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %} {% endblock %} | RequestMeta</title>
+    <link href="//cdn.bootcss.com/semantic-ui/2.1.8/semantic.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "prettify.min.css" %}">
+    <script src="{% static "prettify.min.js" %}"></script>
+    <script src="{% static "jquery.js" %}"></script>
+
+    <script type="text/javascript">
+      function createURL() {
+        $.ajax({'url': '/url/create/', 'type': 'GET', 
+            'success': function(data) {
+            window.location.href = "/inspect/"+data+"/";
+          }
+        });
+      }
+    </script>
+  </head>
+  <body onload="prettyPrint()">
+    <div class="ui grid" style="margin-left: 35px;margin-right: 35px;margin-top: 80px;">
+      <div class="four wide column">
+        <div class="bottom-right" style="float: right;">
+          <a href="/">
+          <h1 class="ui green header" style="margin-top: 0px;margin-bottom: 0px;float: right;font-size: 3em;">Meta</h1>
+          <h1 class="ui grey header" style="margin-top: 0px;margin-bottom: 0px;float: right;font-size: 3em;">Request</h1>
+          </a>
+        </div>
+      </div>
+      <div class="twelve wide column" style="padding-bottom: 0px;">
+      {% block right_header %} {% endblock %}
+      </div>
+    </div>
+    <div class="container" style="margin-top: 30px;">
+    {% block content %} {% endblock %}
+    </div>
+  </body> 
+</html>
+

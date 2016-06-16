@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %} 
+
+{% block right_header %} {% endblock %}
+
+{% block content %}
+<div class="ui grid">
+  <div class="two wide column">
+  </div>
+  <div class="ten wide column" style="margin-top: 50px;">
+    <h1 class="ui teal header" style="font-size: 5em; text-align:center;">监视HTTP请求</h1>
+    <h5 class="ui header" style="margin-top: 35px;">
+      <p>RequestMeta提供一个URL, 您可以对此URL进行任何HTTP操作, 操作后会提供详细的请求数据供您参考.
+      使用RequestMeta可以很直观的看到您的HTTP客户端请求的头信息及参数和内容信息</p>
+    </h5>
+    <div class="wrapper">
+      <button class="ui huge green button" onclick="createURL()" style="margin-top: 35px;">
+        <i class="plus icon"></i>
+        Create one URL
+      </button>
+    </div>
+  </div>
+  <div class="three wide column">
+    <h4 class="ui header" style="margin-top: 0px; margin-bottom: 0px;">
+      <i class="history icon" style="margin-top: 0px;"></i>History
+    </h4>
+    <div class="ui middle aligned selection list" style="margin-top: 0px;">
+      {% for url in urls %}
+      <div class="item" style="padding-bottom: 3.5;padding-top: 3.5;">
+        <div class="content">
+          <div class="monospaced description">
+          {% if url.count == 0 %}
+          <a href="/inspect/{{ url.pk }}/">{{ url.pk }}</a>
+          {% else %}
+          <a href="/inspect/{{ url.pk }}/">{{ url.pk }}(<b>{{ url.count }}</b>)</a>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
