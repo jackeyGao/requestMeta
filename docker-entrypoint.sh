@@ -14,5 +14,6 @@ if not User.objects.filter(username='admin').count():
 " | python manage.py shell
 
 
-echo Starting Gunicorn.
-exec gunicorn requestMeta.wsgi:application -w 2 -b :8000
+echo Starting Runserver.
+#exec gunicorn requestMeta.wsgi:application -w 2 -b :8000
+/code/manage.py runserver 0.0.0.0:8000 
