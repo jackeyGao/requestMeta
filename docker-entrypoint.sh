@@ -6,6 +6,7 @@
 
 
 /code/manage.py migrate
+/code/manage.py collectstatic --noinput
 
 echo "from django.contrib.auth.models import User
 if not User.objects.filter(username='admin').count():
@@ -13,4 +14,5 @@ if not User.objects.filter(username='admin').count():
 " | python manage.py shell
 
 
-/usr/local/bin/gunicorn requestMeta.wsgi:application -w 2 -b :8000
+echo Starting Gunicorn.
+exec gunicorn requestMeta.wsgi:application -w 2 -b :8000
