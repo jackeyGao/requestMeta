@@ -89,23 +89,26 @@ QINIU_SECURE_URL = 'true'
 
 APPEND_SLASH = False
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ['MYSQL_INSTANCE_NAME'],
-        'USER': os.environ['MYSQL_USERNAME'],
-        'PASSWORD': os.environ['MYSQL_PASSWORD'],
-        'HOST': os.environ['MYSQL_PORT_3306_TCP_ADDR'],
-        'PORT': os.environ['MYSQL_PORT_3306_TCP_PORT']
-    }
-}
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
+if os.environ["ENVIRONMENT"] == "DEV":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['MYSQL_INSTANCE_NAME'],
+            'USER': os.environ['MYSQL_USERNAME'],
+            'PASSWORD': os.environ['MYSQL_PASSWORD'],
+            'HOST': os.environ['MYSQL_PORT_3306_TCP_ADDR'],
+            'PORT': os.environ['MYSQL_PORT_3306_TCP_PORT']
+        }
+    }
+
 
 
 # Password validation
