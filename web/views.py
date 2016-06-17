@@ -1,4 +1,6 @@
 import json, uuid
+from datetime import datetime
+from datetime import timedelta
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import render_to_response
@@ -23,13 +25,14 @@ ALLOW_KEYS = (
 def set_cookie(fn):
     def wrapper(*args, **kwargs):
         request = args[0]
+        expires = datetime.now() + timedelta(days=7)
         if request.COOKIES.get('user', None):
             _tk = request.COOKIES.get('user', None)
         else:
             _tk = _get_new_csrf_key()
 
         response = fn(*args, **kwargs)
-        response.set_cookie('user', _tk)
+        response.set_cookie('user', _tk, expires=expires)
         return response
     return wrapper
 
@@ -57,7 +60,7 @@ def receiver(request, url):
 @set_cookie
 def inspect(request, url):
     url = get_object_or_404(URL, pk=url)
-    qs = Request.objects.filter(url=url).order_by('-time')
+    qs = Request.objects.filter(url=url).order_by('-time')[:30]
     http_host = request.META.get('HTTP_HOST', None)
     return render_to_response('inspect.html', locals())
 
@@ -74,17 +77,17 @@ def create_url(request):
 @csrf_protect
 @set_cookie
 def index(request):
-    if request.COOKIES.get('user', None):
-        _tk = request.COOKIES.get('user', None)
-    else:
-        _tk = _get_new_csrf_key()
+    if not request.COOKIES.get('user', None):
+        return render_to_response('index.html', locals())
 
-    urls = URL.objects.filter(user=_tk).order_by('-start_time')
+    _tk = request.COOKIES.get('user', None)
+    urls = URL.objects.filter(user=_tk).order_by('-start_time')[:10]
     for url in urls:
         count = Request.objects.filter(url=url).count()
-        url.count = count
+        if count > 30:
+            url.count = 30
+        else:
+            url.count = count
 
-    #urls = sorted(urls, key=lambda u:u.count,reverse=False)
-    response = render_to_response('index.html', locals())
-    return response
+    return render_to_response('index.html', locals())
 
