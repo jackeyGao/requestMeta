@@ -18,7 +18,7 @@
     <div  id="{{request.id}}" class="floating ui green basic label"><a href="#{{request.id}}">{{ forloop.counter }}</a></div>
     <div class="ui grid" style="background-color: #eeeeee;">
       <div class="five wide column">
-        {{ request.metas|value:"HTTP_HOST"}}</br>
+        {{ request.metas|headers:"HTTP_HOST"}}</br>
         <b>{{ request.method }}</b> /{{ request.url.pk }}</br>
       </div>
       <div class="five wide column">
@@ -27,7 +27,7 @@
       </div>
       <div class="three wide column">
         {{ request.time|humanize }} <a href="#{{request.id}}"><i class="green linkify icon"></i></a></br>
-        <b>From: </b>{{ request.metas|value:"HTTP_X_FORWARDED_FOR"}}
+        <b>From: </b>{{ request.headers|value:"HTTP_X_FORWARDED_FOR"}}
       </div>
       <div id="tojson" class="three wide column">
         <a id="json" href="#" >
