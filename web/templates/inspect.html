@@ -13,7 +13,7 @@
 
 {% block content %}
 {% for request in qs %}
-<div class="ui greyborder grid" style="margin-bottom: 30px; margin-left: 35px;margin-right: 35px;">
+<div id="message" class="ui greyborder grid" style="margin-bottom: 30px; margin-left: 35px;margin-right: 35px;">
   <div class="sixteen wide column">
     <div  id="{{request.id}}" class="floating ui green basic label"><a href="#{{request.id}}">{{ forloop.counter }}</a></div>
     <div class="ui grid" style="background-color: #eeeeee;">
@@ -21,13 +21,23 @@
         {{ request.metas|value:"REMOTE_ADDR"}}</br>
         <b>{{ request.method }}</b> /{{ request.url.pk }}</br>
       </div>
-      <div class="eight wide column">
-        <i class="teal code icon"></i>{{ request.metas|value:"CONTENT_TYPE"}}</br>
+      <div class="five wide column">
+        <i class="teal terminal icon"></i>{{ request.metas|value:"CONTENT_TYPE"}}</br>
         <i class="teal upload icon"></i>{{ request.metas|value:"CONTENT_LENGTH"}} bytes
       </div>
       <div class="three wide column">
         {{ request.time|humanize }} <a href="#{{request.id}}"><i class="green linkify icon"></i></a></br>
         <b>From: </b>{{ request.metas|value:"REMOTE_ADDR"}}
+      </div>
+      <div id="tojson" class="three wide column">
+        <a id="json" href="#" >
+          <i class="green code icon"></i>
+          <span class="green text" style="font-size: 4px;">JSON</span>
+        </a>
+        <a id="from" href="#"  style="display:none;">
+          <i class="green columns icon"></i>
+          <span class="green text" style="font-size: 4px;">FROM</span>
+        </a>
       </div>
     </div>
   </div>
@@ -37,7 +47,7 @@
     <b>{{ k }}: </b>{{ v }}</br>
     {% endfor %}
   </div>
-  <div class="eleven wide monospaced column">
+  <div id="data-list" class="eleven wide monospaced column">
     <h4 class="ui grey header">HEADERS</h4>
     {% for k, v in request.metas.items%}
     <b>{{ k }}: </b>{{ v }}</br>
@@ -45,6 +55,10 @@
     {% for k, v in request.headers.items %}
     <b>{{ k }}: </b>{{ v }}</br>
     {% endfor %}
+  </div>
+  <div id="data-json" class="eleven wide monospaced column" style="display: none;">
+    <h4 class="ui grey header">HEADERS</h4>
+    <pre class="prettyprint">{{ request.to_json }}</pre>
   </div>
   <div class="sixteen wide column">
   <h4 class="ui grey header">RAW BODY</h4>

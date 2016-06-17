@@ -12,11 +12,13 @@
     <script type="text/javascript">
       function createURL() {
         $.ajax({'url': '/url/create/', 'type': 'GET', 
-            'success': function(data) {
-            window.location.href = "/inspect/"+data+"/";
-          }
-        });
+          'success': function(data) {
+          window.location.href = "/inspect/"+data+"/";
+       }
+     });
       }
+
+      
     </script>
   </head>
   <body onload="prettyPrint()">
@@ -59,6 +61,18 @@
         </div>
       </div>
     </div>
+    <script>
+      $(function () {
+        $('#tojson a').click(function() {
+          event.preventDefault();
+          $(this).closest("#tojson").find("#json").toggle();
+          $(this).closest("#tojson").find("#from").toggle();
+          $(this).closest(".ui.greyborder.grid").find("#data-json").toggle();
+          $(this).closest(".ui.greyborder.grid").find("#data-list").toggle();
+          return false;
+        });
+      });
+    </script>
   </body> 
 </html>
 
