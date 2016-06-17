@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+import json
 from django.db import models
 from jsonfield import JSONField
 
@@ -26,6 +26,13 @@ class Request(models.Model):
     headers = JSONField()
     parameters = JSONField()
     body = models.TextField(default="")
+
+    def to_json(self):
+        ob = {}
+        ob["metas"] = self.metas
+        ob["parameters"] = self.parameters
+        ob["headers"] = self.headers
+        return json.dumps(ob, indent=2, ensure_ascii=False)
 
     def __str__(self):
         return self.url._id
