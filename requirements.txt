@@ -3,6 +3,7 @@ Django==1.9.7
 django-qiniu-storage==2.3.0
 gunicorn==19.6.0
 jsonfield==1.0.3
+MySQL-python==1.2.5
 python-dateutil==2.5.3
 qiniu==7.0.7
 requests==2.10.0
