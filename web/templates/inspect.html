@@ -3,18 +3,19 @@
 {% block title %}Inspect {% endblock %} 
 
 {% block right_header %}
-<div class="bottom-right" style="float: right">
+<div class="bottom-right" style="float: right;">
   <div class="ui green basic label">
   <i class="green bullseye icon"></i>
-    http://{{http_host}}/{{ url.pk }}
+    <a href="/{{ url.pk }}">http://{{http_host}}/{{ url.pk }}</a>
   </div>
 </div>
 {% endblock %}
 
 {% block content %}
 {% for request in qs %}
-<div id="{{request.id}}" class="ui greyborder grid" style="margin-top: 20px;margin-left: 35px;margin-right: 35px;">
+<div class="ui greyborder grid" style="margin-bottom: 30px; margin-left: 35px;margin-right: 35px;">
   <div class="sixteen wide column">
+    <div  id="{{request.id}}" class="floating ui green basic label"><a href="#{{request.id}}">{{ forloop.counter }}</a></div>
     <div class="ui grid" style="background-color: #eeeeee;">
       <div class="five wide column">
         {{ request.metas|value:"REMOTE_ADDR"}}</br>
@@ -63,10 +64,11 @@
   <div class="sixteen wide column">
     <h3 class="ui center aligned header">Meta URL</h3>
     <div class="wrapper">
-      <div class="ui grey big basic label" style="">
-      <i class="yellow bullseye icon"></i>
-        http://{{http_host}}/{{ url.pk }}
+      <div class="ui left icon big input" style="width: 75%;">
+        <input class="green text xxlarge" style="border-width: 2px;color: #555555;" type="text" value="http://{{http_host}}/{{ url.pk }}" onclick="this.select()">
+        <i class="yellow bullseye icon"></i>
       </div>
+
       <h5 class="ui header">
         根据以下方法开始建立请求, 请求之后请刷新本页面, 查看请求数据.
       </h5>
@@ -101,7 +103,7 @@ result.lines { |f| f.each_line {|line| p line} }</pre>
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RequestBinExample
+namespace RequestMetaExample
 {
   class Program
   {
@@ -130,7 +132,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 
 import java.io.*;
 
-public class RequestBinTutorial {
+public class RequestMetaTutorial {
   public static void main(String[] args) {
     HttpClient client = new HttpClient();
     GetMethod method = new GetMethod("http://{{http_host}}/{{ url.pk }}");
@@ -159,5 +161,12 @@ public class RequestBinTutorial {
   </div>
 </div>
 {% endif %}
+
+<div class="ui grid" style="margin-top: 20px;margin-left: 35px;margin-right: 35px;">
+  <div class="sixteen wide column" style="padding-left: 0px;">
+    <h4 class="ui header">额度</h4>
+    目前限额为30个请求数据, 并保存7天, 尽可能的使所有的请求都恰到好处.
+  </div>
+</div>
 
 {% endblock %}

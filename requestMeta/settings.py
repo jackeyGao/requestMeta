@@ -74,15 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'requestMeta.wsgi.application'
 
-STATICFILES_STORAGE = "qiniustorage.backends.QiniuStorage"
-DEFAULT_FILE_STORAGE = 'qiniustorage.backends.QiniuStorage'
-
-QINIU_ACCESS_KEY = '-9GvtvlzlYsJThtrNMVocrhcsh3lmOTAuY6aXEBT'
-QINIU_SECRET_KEY = 'l7fqBwgd-3M5ApcquLCFb-KKmLmNcIrlpQGJbBem'
-QINIU_BUCKET_NAME = 'requestmeta'
-#QINIU_BUCKET_DOMAIN = '7xlitg.com1.z0.glb.clouddn.com'
-QINIU_BUCKET_DOMAIN = 'o8uou7r4o.qnssl.com'
-QINIU_SECURE_URL = 'true'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -91,12 +82,24 @@ APPEND_SLASH = False
 
 
 if os.environ["ENVIRONMENT"] == "DEV":
+    DEBUG = True
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+
+    STATICFILES_STORAGE = "qiniustorage.backends.QiniuStorage"
+    DEFAULT_FILE_STORAGE = 'qiniustorage.backends.QiniuStorage'
+    
+    QINIU_ACCESS_KEY = '-9GvtvlzlYsJThtrNMVocrhcsh3lmOTAuY6aXEBT'
+    QINIU_SECRET_KEY = 'l7fqBwgd-3M5ApcquLCFb-KKmLmNcIrlpQGJbBem'
+    QINIU_BUCKET_NAME = 'requestmeta'
+    #QINIU_BUCKET_DOMAIN = '7xlitg.com1.z0.glb.clouddn.com'
+    QINIU_BUCKET_DOMAIN = 'o8uou7r4o.qnssl.com'
+    QINIU_SECURE_URL = 'true'
+
 else:
     DATABASES = {
         'default': {
@@ -108,6 +111,16 @@ else:
             'PORT': os.environ['MYSQL_PORT_3306_TCP_PORT']
         }
     }
+
+    STATICFILES_STORAGE = "qiniustorage.backends.QiniuStorage"
+    DEFAULT_FILE_STORAGE = 'qiniustorage.backends.QiniuStorage'
+    
+    QINIU_ACCESS_KEY = '-9GvtvlzlYsJThtrNMVocrhcsh3lmOTAuY6aXEBT'
+    QINIU_SECRET_KEY = 'l7fqBwgd-3M5ApcquLCFb-KKmLmNcIrlpQGJbBem'
+    QINIU_BUCKET_NAME = 'requestmeta'
+    #QINIU_BUCKET_DOMAIN = '7xlitg.com1.z0.glb.clouddn.com'
+    QINIU_BUCKET_DOMAIN = 'o8uou7r4o.qnssl.com'
+    QINIU_SECURE_URL = 'true'
 
 
 
