@@ -23,7 +23,12 @@
       </div>
       <div class="five wide column">
         <i class="teal terminal icon"></i>{{ request.metas|value:"CONTENT_TYPE"}}</br>
-        <i class="teal upload icon"></i>{{ request.metas|value:"CONTENT_LENGTH"}} bytes
+        <i class="teal upload icon"></i>
+        {% if request.metas|value:"CONTENT_LENGTH" %}
+        {{ request.metas|value:"CONTENT_LENGTH"}} bytes
+        {% else %}
+        none bytes
+        {% endif %}
       </div>
       <div class="three wide column">
         {{ request.time|humanize }} <a href="#{{request.id}}"><i class="green linkify icon"></i></a></br>
@@ -37,11 +42,11 @@
       <div id="tojson" class="three wide column">
         <a id="json" href="#" >
           <i class="green code icon"></i>
-          <span class="green text" style="font-size: 4px;">JSON</span>
+          <span class="green text" style="font-size: 12px;">JSON</span>
         </a>
         <a id="form" href="#"  style="display:none;">
           <i class="green columns icon"></i>
-          <span class="green text" style="font-size: 4px;">FORM</span>
+          <span class="green text" style="font-size: 12px;">FORM</span>
         </a>
       </div>
     </div>
