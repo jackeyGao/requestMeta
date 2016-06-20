@@ -101,6 +101,7 @@ if os.environ["ENVIRONMENT"] == "DEV":
     QINIU_SECURE_URL = 'true'
 
 else:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
