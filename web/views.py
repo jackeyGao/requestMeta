@@ -18,7 +18,6 @@ ALLOW_KEYS = (
         'SERVER_PROTOCOL',
         'CONTENT_LENGTH',
         'REMOTE_ADDR',
-        'wsgi.url_scheme',
         'CONTENT_TYPE'
         )
 
@@ -45,6 +44,8 @@ def receiver(request, url):
     headers = { k: str(v) for k, v in meta.items() if k.startswith('HTTP')}
     parameters = request.GET or request.POST
     raw_body = request.body
+
+    metas["SCHEME"] = request.scheme
 
     ob = {}
     ob["url"] = url
