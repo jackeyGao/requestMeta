@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import _get_new_csrf_key
 from web.models import Request
 from web.models import URL
+from web.utils import get_domain_from_wsgirequest
 
 # Create your views here.
 
@@ -62,7 +63,7 @@ def receiver(request, url):
 def inspect(request, url):
     url = get_object_or_404(URL, pk=url)
     qs = Request.objects.filter(url=url).order_by('-time')[:30]
-    http_host = request.META.get('HTTP_HOST', None)
+    domain = get_domain_from_wsgirequest(request)
     return render_to_response('inspect.html', locals())
 
 @csrf_protect

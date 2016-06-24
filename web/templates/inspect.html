@@ -6,7 +6,7 @@
 <div class="bottom-right" style="float: right;">
   <div class="ui green basic label">
   <i class="green bullseye icon"></i>
-    <a href="/{{ url.pk }}">http://{{http_host}}/{{ url.pk }}</a>
+    <a href="/{{ url.pk }}">{{domain}}/{{ url.pk }}</a>
   </div>
 </div>
 {% endblock %}
@@ -89,7 +89,7 @@
     <h3 class="ui center aligned header">Meta URL</h3>
     <div class="wrapper">
       <div class="ui left icon big input" style="width: 80%;">
-        <input class="green text xxlarge" style="border-width: 2px;color: #555555;" type="text" value="http://{{http_host}}/{{ url.pk }}" onclick="this.select()">
+        <input class="green text xxlarge" style="border-width: 2px;color: #555555;" type="text" value="{{domain}}/{{ url.pk }}" onclick="this.select()">
         <i class="yellow bullseye icon"></i>
       </div>
 
@@ -100,17 +100,17 @@
 
 
     <h5 class="ui header">cURL</h5>
-      <pre class="prettyprint">curl -X POST -d "fizz=buzz" http://{{http_host}}/{{ url.pk }}</pre>
+      <pre class="prettyprint">curl -X POST -d "fizz=buzz" {{ domain }}/{{ url.pk }}</pre>
 
       <h5 class="ui header">Python (with Requests)</h5>
       <pre class="prettyprint">import requests, time
-r = requests.post('http://{{http_host}}/{{ url.pk }}', data={"ts":time.time()})
+r = requests.post('{{ domain }}/{{ url.pk }}', data={"ts":time.time()})
 print r.status_code
 print r.content</pre>
 
       <h5 class="ui header">Node.js (with request)</h5>
       <pre class="prettyprint">var request = require('request');
-var url ='http://{{http_host}}:g/{{ url.pk }}'
+var url ='{{ domain }}/{{ url.pk }}'
 request(url, function (error, response, body) {
   if (!error) {
     console.log(body);
@@ -119,7 +119,7 @@ request(url, function (error, response, body) {
 
       <h5 class="ui header">Ruby</h5>
       <pre class="prettyprint">require 'open-uri'
-result = open('http://{{http_host}}/{{ url.pk }}')
+result = open('{{ domain }}/{{ url.pk }}')
 result.lines { |f| f.each_line {|line| p line} }</pre>
 
       <h5 class="ui header">C# / .NET (4.5+)</h5>
@@ -144,7 +144,7 @@ namespace RequestMetaExample
     private static async Task&lt;HttpResponseMessage&gt; MakeRequest()
     {
       var httpClient = new HttpClient();
-      return await httpClient.GetAsync(new Uri("http://{{http_host}}/{{ url.pk }}"));
+      return await httpClient.GetAsync(new Uri("{{ domain }}/{{ url.pk }}"));
     }
   }
 }</pre>
@@ -159,7 +159,7 @@ import java.io.*;
 public class RequestMetaTutorial {
   public static void main(String[] args) {
     HttpClient client = new HttpClient();
-    GetMethod method = new GetMethod("http://{{http_host}}/{{ url.pk }}");
+    GetMethod method = new GetMethod("{{ domain }}/{{ url.pk }}");
     try {
       int statusCode = client.executeMethod(method);
       byte[] responseBody = method.getResponseBody();
@@ -175,7 +175,7 @@ public class RequestMetaTutorial {
 
       <h5 class="ui header">PHP</h5>
       <pre class="prettyprint">&lt;?php
-    $result = file_get_contents('http://{{http_host}}/{{ url.pk }}');
+    $result = file_get_contents('{{ domain }}/{{ url.pk }}');
     echo $result;
 ?&gt;</pre>
 
